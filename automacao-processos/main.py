@@ -1,6 +1,6 @@
 import pandas as pd
 
-databaseName = "database/Vendas.xlsx"
-tabela = pd.read_excel(databaseName)
+databaseName = "./automacao-processos/database/vendas.xlsx"
+tableSell = pd.read_excel(databaseName)
 
-print(tabela)
+print(tableSell)
