@@ -1,17 +1,19 @@
 import pandas as pd
 
 databaseName = "./automacao-processos/database/vendas.xlsx"
-tableSell = pd.read_excel(databaseName)
+sellTable = pd.read_excel(databaseName)
 
-revenuesColumns = tableSell[["ID Loja", "Valor Final"]].groupby("ID Loja").sum()
+revenuesColumns = sellTable[["ID Loja", "Valor Final"]].groupby("ID Loja").sum()
 revenuesColumns = revenuesColumns.sort_values(by="Valor Final", ascending=False)
 
-amountColumns = tableSell[["ID Loja", "Quantidade"]].groupby("ID Loja").sum()
+amountColumns = sellTable[["ID Loja", "Quantidade"]].groupby("ID Loja").sum()
 amountColumns = amountColumns.sort_values(by="Quantidade", ascending=False)
 
 ticketMiddleColumns = revenuesColumns["Valor Final"] / amountColumns["Quantidade"]
 ticketMiddleColumns = ticketMiddleColumns.to_frame()
 ticketMiddleColumns = ticketMiddleColumns.rename(columns={0: "Ticket Médio"})
+
+fullTable = revenuesColumns.join(amountColumns).join(ticketMiddleColumns)
 
 def sendEmail(shoppingName, table):
     import smtplib
@@ -41,4 +43,13 @@ def sendEmail(shoppingName, table):
     s.sendmail(msg['From'], [msg['To']], msg.as_string().encode('utf-8'))
     print('Email enviado')
 
-sendEmail("Diretoria", revenuesColumns)
+stores = sellTable["ID Loja"].unique()
+
+for store in stores:
+    storeTable = sellTable.loc[sellTable["ID Loja"] == store, ["ID Loja", "Quantidade", "Valor Final"]]
+    storeTable = storeTable.groupby("ID Loja").sum()
+    storeTable["Ticket Médio"] = storeTable["Valor Final"] / storeTable["Quantidade"]
+    sendEmail(store, storeTable)
+
+sendEmail("Diretoria", fullTable)
+
