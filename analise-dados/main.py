@@ -22,6 +22,13 @@ caregoryTable = table["Categoria"].value_counts(normalize=True).mul(100).round(1
     # +: Concatena com '%'
 
 # GRAPHIC
+    #MAKE A GRAPHIC
+columns = []
+for column in table:
+    columns.append(column)
 
-fig = px.histogram(table, x="Categoria")
-fig.show()
+def makeGraph(index):
+    fig = px.histogram(table, x=index, color="Categoria")
+    fig.show()
+
+makeGraph(columns[13])
