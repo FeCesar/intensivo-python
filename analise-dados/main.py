@@ -1,5 +1,7 @@
 import pandas as pd
 import plotly.express as px
+import plotly.io as pio
+pio.renderers.default = "iframe"
 
 # IMPORT TABLE
 # DROPING USELESS COLUMN
@@ -19,3 +21,7 @@ caregoryTable = table["Categoria"].value_counts(normalize=True).mul(100).round(1
     # astyoe(str): Converte em string
     # +: Concatena com '%'
 
+# GRAPHIC
+
+fig = px.histogram(table, x="Categoria")
+fig.show()
