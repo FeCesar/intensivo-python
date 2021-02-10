@@ -45,11 +45,11 @@ def sendEmail(shoppingName, table):
 
 stores = sellTable["ID Loja"].unique()
 
-for store in stores:
-    storeTable = sellTable.loc[sellTable["ID Loja"] == store, ["ID Loja", "Quantidade", "Valor Final"]]
-    storeTable = storeTable.groupby("ID Loja").sum()
-    storeTable["Ticket Médio"] = storeTable["Valor Final"] / storeTable["Quantidade"]
-    sendEmail(store, storeTable)
+# for store in stores:
+#     storeTable = sellTable.loc[sellTable["ID Loja"] == store, ["ID Loja", "Quantidade", "Valor Final"]]
+#     storeTable = storeTable.groupby("ID Loja").sum()
+#     storeTable["Ticket Médio"] = storeTable["Valor Final"] / storeTable["Quantidade"]
+#     sendEmail(store, storeTable)
 
 sendEmail("Diretoria", fullTable)
 
