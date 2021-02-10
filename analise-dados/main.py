@@ -1,4 +1,5 @@
 import pandas as pd
+import plotly.express as px
 
 # IMPORT TABLE
 # DROPING USELESS COLUMN
